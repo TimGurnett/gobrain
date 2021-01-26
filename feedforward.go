@@ -144,7 +144,7 @@ func (nn *FeedForward) Update(inputs []float64) []float64 {
 			}
 		}
 
-		nn.HiddenActivations[i] = sigmoid(sum)
+		nn.HiddenActivations[i] = leakyReLu(sum) //sigmoid(sum)
 	}
 
 	// update the contexts
@@ -161,7 +161,7 @@ func (nn *FeedForward) Update(inputs []float64) []float64 {
 			sum += nn.HiddenActivations[j] * nn.OutputWeights[j][i]
 		}
 
-		nn.OutputActivations[i] = sigmoid(sum)
+		nn.OutputActivations[i] = leakyReLu(sum) //sigmoid(sum)
 	}
 
 	return nn.OutputActivations
@@ -178,7 +178,7 @@ func (nn *FeedForward) BackPropagate(targets []float64, lRate, mFactor float64) 
 
 	outputDeltas := vector(nn.NOutputs, 0.0)
 	for i := 0; i < nn.NOutputs; i++ {
-		outputDeltas[i] = dsigmoid(nn.OutputActivations[i]) * (targets[i] - nn.OutputActivations[i])
+		outputDeltas[i] = dleakyReLu(nn.OutputActivations[i]) * (targets[i] - nn.OutputActivations[i]) //dsigmoid(nn.OutputActivations[i]) * (targets[i] - nn.OutputActivations[i])
 	}
 
 	hiddenDeltas := vector(nn.NHiddens, 0.0)
@@ -189,7 +189,7 @@ func (nn *FeedForward) BackPropagate(targets []float64, lRate, mFactor float64) 
 			e += outputDeltas[j] * nn.OutputWeights[i][j]
 		}
 
-		hiddenDeltas[i] = dsigmoid(nn.HiddenActivations[i]) * e
+		hiddenDeltas[i] = dleakyReLu(nn.HiddenActivations[i]) * e //dsigmoid(nn.HiddenActivations[i]) * e
 	}
 
 	for i := 0; i < nn.NHiddens; i++ {

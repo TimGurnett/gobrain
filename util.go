@@ -25,6 +25,20 @@ func vector(I int, fill float64) []float64 {
 	return v
 }
 
+func leakyReLu(x float64) float64 {
+	if x < 0 {
+		return x * 0.01
+	}
+	return x
+}
+
+func dleakyReLu(x float64) float64 {
+	if x > 0 {
+		return 1
+	}
+	return 0.01
+}
+
 func sigmoid(x float64) float64 {
 	return 1 / (1 + math.Exp(-x))
 }
