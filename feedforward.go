@@ -164,7 +164,7 @@ func (nn *FeedForward) Update(inputs []float64) []float64 {
 		nn.OutputActivations[i] = leakyReLu(sum) //sigmoid(sum)
 	}
 
-	return nn.OutputActivations
+	return SoftMax(nn.OutputActivations)
 }
 
 /*
